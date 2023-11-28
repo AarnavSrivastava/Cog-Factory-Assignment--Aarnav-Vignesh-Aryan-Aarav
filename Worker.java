@@ -1,77 +1,77 @@
 package Cog_Factory;
 
-public class Worker implements Comparable<Worker> {
-    private String name;
-    private int cogsPerHour;
-    private int cogsProduced;
-
-    private int cogsWasted;
+public class Worker {
+    
+    private String names;
+    private int cph;
+    private int totalCogsProduced;
+    private int totalWaste;
     private int cogsInProgress;
 
-    public Worker(String name, int cph) {
-        this.name = name;
-        cogsPerHour = cph;
 
-        cogsProduced = 0;
-        cogsWasted = 0;
-        cogsInProgress = 0;
+    public Worker(String names, int cph){
+        this.names = names;
+        this.cph = cph;        
+        this.totalCogsProduced = 0;
+        this.totalWaste = 0;
+        this.cogsInProgress = 0;
     }
 
-    @Override
-    public int compareTo(Worker o) {
-        return cogsPerHour == o.cogsPerHour ? 0 : (cogsPerHour > o.cogsPerHour) ? 1 : -1;
+    public String getNames(){
+        return this.names;
     }
 
-    public int getCogsPerHour() {
-        return cogsPerHour;
+    public int getCph(){
+        return this.cph;
     }
 
-    public int getCogsProduced() {
-        return cogsProduced;
+    public int getTotalCogsProduced(){
+        return this.totalCogsProduced;
     }
 
-    public int getCogsWasted() {
-        return cogsWasted;
+    public int getTotalWaste(){
+        return this.totalWaste;
     }
 
-    public int getCogsInProgress() {
-        return cogsInProgress;
+    public int getCogsInProgress(){
+        return this.cogsInProgress;
     }
 
-    public String getName() {
-        return name;
+    public void reset(){
+        this.totalCogsProduced = 0;
+        this.totalWaste = 0;
+        this.cogsInProgress = 0;
     }
 
-    public void reset() {
-        cogsProduced = 0;
-        cogsWasted = 0;
-        cogsInProgress = 0;
-    }
-
-    public boolean isBusy() {
+    public boolean isBusy(){
         return cogsInProgress > 0;
     }
 
-    public void assignOrder(int x) {
-        cogsInProgress = x;
+    public void assignOrder(int orderSize){
+        cogsInProgress = orderSize;
     }
 
-    public void workOneHour() {
-        if (cogsInProgress > cogsPerHour) {
-            cogsInProgress -= cogsPerHour;
-            cogsProduced += cogsPerHour;
-        } else {
-            cogsProduced += cogsInProgress;
-            cogsWasted += cogsInProgress;
-        }
-
-        if (cogsInProgress < 0) {
+    public void work(){
+        
+        // Perform an hour of work
+        cogsInProgress -= cph;
+        int wasted = 0;
+        if(cogsInProgress< 0)
+        {
+            wasted =  -cogsInProgress;
             cogsInProgress = 0;
+            totalWaste += wasted;
         }
+        totalCogsProduced += cph-wasted;
+        
     }
 
-    @Override
-    public String toString() {
-        return name + ": \nCogs In Progress:" + cogsInProgress + "\n" + cogsPerHour + "\t" + cogsPerHour + "\t";
+    public int compareTo(int cph){
+        return this.cph - cph;
     }
+
+    public String toString(){
+        return "Worker: " + this.names + " CPH: " + this.cph + " Total Cogs Produced: " + this.totalCogsProduced + " Total Waste: " + this.totalWaste + " Cogs In Progress: " + this.cogsInProgress;
+    }
+
 }
