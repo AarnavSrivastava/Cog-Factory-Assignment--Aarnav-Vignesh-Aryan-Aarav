@@ -20,7 +20,23 @@ public class Main {
         cogs.add(35);
         cogs.add(80);
         FactorySimulator simulation = new FactorySimulator(workers, cogs);
-        simulation.run();       
+        simulation.run();    
+
+
+        workers = new ArrayList<>();
+        cogs = new LinkedList<>();
+        workers.add(new Worker("A", 30));
+        workers.add(new Worker("B", 25));
+        
+        cogs.add(60);
+        cogs.add(40);
+        cogs.add(30);
+        cogs.add(20);
+        cogs.add(35);
+        cogs.add(80);
+
+        FactorySimulator simulation2 = new FactorySimulator(workers, cogs);
+        simulation2.run2();       
         
     }
 }
