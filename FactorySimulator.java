@@ -8,9 +8,9 @@ public class FactorySimulator {
     private Queue<Integer> cogOrders;
     private ArrayList<Integer> cogList;
 
-    public FactorySimulator(ArrayList<Worker> workers, ArrayList<Integer> cogList) {
+    public FactorySimulator(ArrayList<Worker> workers, Queue<Integer> cogs) {
         this.workers = workers;
-        this.cogList = cogList;
+        this.cogList = cogs;
 
         resetQueue();
     }
