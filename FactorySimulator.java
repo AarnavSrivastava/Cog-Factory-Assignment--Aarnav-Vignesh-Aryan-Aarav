@@ -21,7 +21,7 @@ public class FactorySimulator {
     }
 
     // Run Basic factory Simulation
-    public void runRegular() {
+    public String runRegular() {
         int hoursWorked = 0;
         
         while (!workerQueue.isEmpty() && !cogOrders.isEmpty()) {
@@ -32,14 +32,14 @@ public class FactorySimulator {
         while (!cogOrders.isEmpty() || !workersDone(workers)) {
             for (Worker worker : workers) {
                 if (worker.isBusy()) {
-                    System.out.println("Worker " + worker.getNames() + " is busy and has " + worker.getCogsInProgress() + " cogs in progress");
+                    //System.out.println("Worker " + worker.getNames() + " is busy and has " + worker.getCogsInProgress() + " cogs in progress");
                 } else {
                     if (!cogOrders.isEmpty()) {
-                        System.out.println("Worker " + worker.getNames() + " is to be assigned a new order and has " + worker.getCogsInProgress() + " cogs in progress. They have completed " + worker.getTotalCogsProduced() + " cogs and wasted " + worker.getTotalWaste() + " cogs");
+                        //System.out.println("Worker " + worker.getNames() + " is to be assigned a new order and has " + worker.getCogsInProgress() + " cogs in progress. They have completed " + worker.getTotalCogsProduced() + " cogs and wasted " + worker.getTotalWaste() + " cogs");
                         worker.assignOrder(cogOrders.poll());
-                        System.out.println("Worker " + worker.getNames() + " is busy and has " + worker.getCogsInProgress() + " cogs in progress");
+                        //System.out.println("Worker " + worker.getNames() + " is busy and has " + worker.getCogsInProgress() + " cogs in progress");
                     } else {
-                        System.out.println("Worker " + worker.getNames() + " is idle and has " + worker.getCogsInProgress() + " cogs in progress. They have completed " + worker.getTotalCogsProduced() + " cogs and wasted " + worker.getTotalWaste() + " cogs");
+                        //System.out.println("Worker " + worker.getNames() + " is idle and has " + worker.getCogsInProgress() + " cogs in progress. They have completed " + worker.getTotalCogsProduced() + " cogs and wasted " + worker.getTotalWaste() + " cogs");
                     }
                 }
 
@@ -51,7 +51,7 @@ public class FactorySimulator {
 
         // print end stats for each worker
         for (Worker worker : workers) {
-            System.out.println("Worker " + worker.getNames() + " is idle and has " + worker.getCogsInProgress() + " cogs in progress. They have completed " + worker.getTotalCogsProduced() + " cogs and wasted " + worker.getTotalWaste() + " cogs");
+            //System.out.println("Worker " + worker.getNames() + " is idle and has " + worker.getCogsInProgress() + " cogs in progress. They have completed " + worker.getTotalCogsProduced() + " cogs and wasted " + worker.getTotalWaste() + " cogs");
         }
 
         // Compute Statistics
@@ -62,6 +62,9 @@ public class FactorySimulator {
         }
         System.out.println("Average Waste: " + (totalWaste/((double) workers.size())));
         System.out.println("Hours Worked: " + hoursWorked);
+
+        
+        return "" + (totalWaste/((double) workers.size())) + ":" + hoursWorked;
     }
 
     private boolean workersDone(ArrayList<Worker> workers2) {
@@ -75,7 +78,7 @@ public class FactorySimulator {
     }
 
     //Assign largest inital orders to best CPH workers initally
-    public void run2() {
+    public String run2() {
         
         int hoursWorked = 0;
         ArrayList<Integer> initalOrders = new ArrayList<Integer>();
@@ -132,6 +135,8 @@ public class FactorySimulator {
         }
         System.out.println("Average Waste: " + (totalWaste/((double) workers.size())));
         System.out.println("Hours Worked " + hoursWorked);
+
+        return "" + (totalWaste/((double) workers.size())) + ":" + hoursWorked;
         
     }
 }
