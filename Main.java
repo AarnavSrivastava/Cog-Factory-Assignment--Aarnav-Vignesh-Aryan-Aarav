@@ -5,6 +5,7 @@ import java.util.Random;
 
 public class Main {
     public static void main(String[] args) {
+        long t0 = System.nanoTime();
         double totalWaste1 = 0;
         double totalTime1 = 0;
 
@@ -44,15 +45,20 @@ public class Main {
 
                 int cogs = 0;
 
+                System.out.println("RANDOM VALUE " + randomValue);
+                System.out.println(randomValue < targetPercentageOrders);
                 if (randomValue < targetPercentageOrders) {
                     int randomNumber = getRandomNumberInRange(20, 100);
-                    System.out.println("Chosen number: " + randomNumber);
+                    cogs = randomNumber;
                 } else {
                     int randomNumber;
                     do {
-                        randomNumber = random.nextInt(); // You can also use nextInt(max) to limit the range
+                        randomNumber = random.nextInt(120) + 1; // You can also use nextInt(max) to limit the range
                     } while (randomNumber >= 20 && randomNumber <= 100);
+                    cogs = randomNumber;
                 }
+
+                System.out.println("COGS: " + cogs);
 
                 cogOrders.add(cogs);
             }
@@ -74,6 +80,10 @@ public class Main {
 
         System.out.println("\nAverage waste after " + numberOfTrials + " runs for Second Model: " + totalWaste2/((double) numberOfTrials));
         System.out.println("Average number of hours after " + numberOfTrials + " runs for Second Model: " + totalTime2/((double) numberOfTrials));
+
+        long t1 = System.nanoTime();
+
+        System.out.println("\nTime to run: " + ((double) (t1-t0)/1_000_000_000.0) + " seconds");
     }
 
     static int getRandomNumberInRange(int min, int max) {
