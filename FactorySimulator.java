@@ -81,18 +81,55 @@ public class FactorySimulator {
         return true;
     }
 
+    private boolean allOccupied(ArrayList<Worker> workers2) {
+        for (Worker worker : workers2) {
+            if (!worker.isBusy()) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     //Assign largest inital orders to best CPH workers initally
     public double[] run2() {
         int hoursWorked = 0;
-        PriorityQueue<Integer> orders = new PriorityQueue<Integer>();
+        ArrayList<Integer> orders = new ArrayList<>();
         while(!cogOrders.isEmpty())
         {
            orders.add(cogOrders.poll());
         }
+
+        Collections.sort(orders, Collections.reverseOrder());
+
+        ArrayList<Worker> workersList = new ArrayList<>();
         
-        while (!workerQueue.isEmpty() && !orders.isEmpty()) {
+        while (!workerQueue.isEmpty()) {
             Worker worker = workerQueue.poll();
-            worker.assignOrder(orders.poll());
+            workersList.add(worker);
+        }
+
+        for (Worker worker : workers) {
+            if (worker.isBusy()) {
+            } else {
+                if (!orders.isEmpty()) {
+                    int lowestIndex = 0;
+                    int lowestRemainder = Integer.MAX_VALUE;
+                    
+                    for (int i = 0; i < orders.size(); i++) {
+                        int order = orders.get(i);
+
+                        int remainder = order % worker.getCph();
+
+                        if (remainder < lowestRemainder) {
+                            lowestRemainder = remainder;
+                            lowestIndex = i;
+                        }
+                    }
+
+                    workersList.get(lowestIndex).assignOrder(orders.remove(lowestIndex));
+                }
+            }
         }
 
         while (!orders.isEmpty() || !workersDone(workers)) {
@@ -102,7 +139,22 @@ public class FactorySimulator {
                 } else {
                     if (!orders.isEmpty()) {
                         // System.out.println("Worker " + worker.getNames() + " is to be assigned a new order and has " + worker.getCogsInProgress() + " cogs in progress. They have completed " + worker.getTotalCogsProduced() + " cogs and wasted " + worker.getTotalWaste() + " cogs");
-                        worker.assignOrder(orders.poll());
+                        int lowestIndex = 0;
+                        int lowestRemainder = Integer.MAX_VALUE;
+                        
+                        for (int i = 0; i < orders.size(); i++) {
+                            int order = orders.get(i);
+
+                            int remainder = order % worker.getCph();
+
+                            if (remainder < lowestRemainder) {
+                                lowestRemainder = remainder;
+                                lowestIndex = i;
+                            }
+                        }
+
+                        workersList.get(lowestIndex).assignOrder(orders.remove(lowestIndex));
+
                         // System.out.println("Worker " + worker.getNames() + " is busy and has " + worker.getCogsInProgress() + " cogs in progress");
                     } else {
                         // System.out.println("Worker " + worker.getNames() + " is idle and has " + worker.getCogsInProgress() + " cogs in progress. They have completed " + worker.getTotalCogsProduced() + " cogs and wasted " + worker.getTotalWaste() + " cogs");
