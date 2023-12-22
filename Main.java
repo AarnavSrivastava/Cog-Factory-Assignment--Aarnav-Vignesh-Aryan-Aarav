@@ -13,7 +13,7 @@ public class Main {
         double totalTime2 = 0;
 
         int numberOfTrials = 10000;
-        int numberOfOrders = 200;
+        int numberOfOrders = 100;
         double targetPercentageOrders = 0.97;
 
         int averageProductionRate = 35;
