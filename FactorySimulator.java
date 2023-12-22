@@ -62,13 +62,19 @@ public class FactorySimulator {
         // Compute Statistics
         // System.out.println("Statistics: ");
         double totalWaste = 0;
+        double totalCogsProduced = 0;
+        double avratioPerWorker = 0;
+        double workerCount = 0;
         for (Worker worker : workers) {
+            totalCogsProduced += worker.getTotalCogsProduced();
             totalWaste += worker.getTotalWaste();
+            workerCount+=1;
+            avratioPerWorker += worker.getTotalWaste()/worker.getTotalCogsProduced();
         }
         // System.out.println("Average Waste: " + (totalWaste/((double) workers.size())));
         // System.out.println("Hours Worked: " + hoursWorked);
 
-        return new double[] { (totalWaste/((double) workers.size())), hoursWorked };
+        return new double[] { (totalWaste/((double) workers.size())), hoursWorked, totalCogsProduced, avratioPerWorker/workerCount};
     }
 
     private boolean workersDone(ArrayList<Worker> workers2) {
@@ -138,10 +144,35 @@ public class FactorySimulator {
 
         for (Worker worker : workersList) {
             
-            worker.assignOrder(orders.remove(0));
+            int lowestIndex = 0;
+            double lowestRemainder = Double.MAX_VALUE;
+            
+            for (int i = 0; i < orders.size(); i++) {
+                int order = orders.get(i);
+
+                double remainder = (double)order / (double)worker.getCph();
+
+                if (distanceFromWholeLarge(remainder) < lowestRemainder) {
+                    lowestRemainder = distanceFromWholeLarge(remainder);
+                    lowestIndex = i;
+                }
+            }
+            System.out.println(lowestRemainder);
+
+            worker.assignOrder(orders.remove(lowestIndex));
         }
 
         while (!orders.isEmpty() || !workersDone(workers)) {
+            
+            int c = 0;
+            for(Worker worker : workers)
+            {
+                if(!worker.isBusy())
+                {
+                    c++;
+                }
+            }
+
             for (Worker worker : workers) {
                 if (worker.isBusy()) {
                     // System.out.println("Worker " + worker.getNames() + " is busy and has " + worker.getCogsInProgress() + " cogs in progress");
@@ -151,7 +182,11 @@ public class FactorySimulator {
                         int lowestIndex = 0;
                         double lowestRemainder = Double.MAX_VALUE;
                         
-                        for (int i = 0; i < orders.size(); i++) {
+                        if(c > orders.size())
+                        {
+                            c = orders.size();
+                        }
+                        for (int i = 0; i < c; i++) {
                             int order = orders.get(i);
 
                             double remainder = (double)order / (double)worker.getCph();
@@ -185,13 +220,20 @@ public class FactorySimulator {
         // Compute Statistics
         // System.out.println("Statistics: ");
         double totalWaste = 0;
+        double totalCogsProduced = 0;
+        double avratioPerWorker = 0;
+        double workerCount = 0;
         for (Worker worker : workers) {
             totalWaste += worker.getTotalWaste();
+            totalCogsProduced += worker.getTotalCogsProduced();
+            workerCount+=1.0;
+            avratioPerWorker += worker.getTotalWaste()/worker.getTotalCogsProduced();
         }
         System.out.println("Average Waste: " + (totalWaste/((double) workers.size())));
         System.out.println("Hours Worked: " + hoursWorked);
+        System.out.println("Ratio Worked: " + avratioPerWorker/workerCount);
 
         
-        return new double[] { (totalWaste/((double) workers.size())), hoursWorked };
+        return new double[] { (totalWaste/((double) workers.size())), hoursWorked, totalCogsProduced, avratioPerWorker/workerCount};
     }
 }
