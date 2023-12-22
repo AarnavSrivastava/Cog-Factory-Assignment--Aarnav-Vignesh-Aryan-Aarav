@@ -91,12 +91,12 @@ public class Main {
         System.out.println("\nAverage waste after " + numberOfTrials + " runs for Base Model: " + totalWaste1/((double) numberOfTrials));
         System.out.println("Average number of hours after " + numberOfTrials + " runs for Base Model: " + totalTime1/((double) numberOfTrials));
         System.out.println("Average number of Cogs Produced " + numberOfTrials + " runs for Base Model: " + totalCogsProduced1/((double) numberOfTrials));
-        System.out.println("Average worker waste/produced ratio " + numberOfTrials + " runs for Base Model: " + (totalRatio1/((double) numberOfTrials))/2);
+        System.out.println("Average worker produced/waste ratio " + numberOfTrials + " runs for Base Model: " + (totalRatio1/((double) numberOfTrials))/2);
 
         System.out.println("\nAverage waste after " + numberOfTrials + " runs for Second Model: " + (totalWaste2/((double) numberOfTrials))/2);
         System.out.println("Average number of hours after " + numberOfTrials + " runs for Second Model: " + totalTime2/((double) numberOfTrials));
         System.out.println("Average number of Cogs Produced " + numberOfTrials + " runs for Second Model: " + (totalCogsProduced2/((double) numberOfTrials))/2);
-        System.out.println("Average worker waste/produced ratio " + numberOfTrials + " runs for Second Model: " + (totalRatio2/((double) numberOfTrials))/2);
+        System.out.println("Average worker produced/waste ratio " + numberOfTrials + " runs for Second Model: " + (totalRatio2/((double) numberOfTrials))/2);
 
         long t1 = System.nanoTime();
 

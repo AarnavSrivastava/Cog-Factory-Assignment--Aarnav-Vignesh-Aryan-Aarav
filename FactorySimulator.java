@@ -69,7 +69,7 @@ public class FactorySimulator {
             totalCogsProduced += worker.getTotalCogsProduced();
             totalWaste += worker.getTotalWaste();
             workerCount+=1;
-            avratioPerWorker += worker.getTotalWaste()/worker.getTotalCogsProduced();
+            avratioPerWorker += (double)worker.getTotalCogsProduced()/(double)worker.getTotalWaste();
         }
         // System.out.println("Average Waste: " + (totalWaste/((double) workers.size())));
         // System.out.println("Hours Worked: " + hoursWorked);
@@ -227,7 +227,7 @@ public class FactorySimulator {
             totalWaste += worker.getTotalWaste();
             totalCogsProduced += worker.getTotalCogsProduced();
             workerCount+=1.0;
-            avratioPerWorker += worker.getTotalWaste()/worker.getTotalCogsProduced();
+            avratioPerWorker += (double)worker.getTotalCogsProduced()/(double)worker.getTotalWaste();
         }
         System.out.println("Average Waste: " + (totalWaste/((double) workers.size())));
         System.out.println("Hours Worked: " + hoursWorked);
