@@ -13,7 +13,7 @@ public class Main {
         double totalTime2 = 0;
 
         int numberOfTrials = 10000;
-        int numberOfOrders = 100;
+        int numberOfOrders = 200;
         double targetPercentageOrders = 0.97;
 
         int averageProductionRate = 35;
@@ -34,7 +34,8 @@ public class Main {
 
                 int randomVariation = random.nextInt(2 * variation + 1) - variation;
                 int actualProductionRate = averageProductionRate + randomVariation;
-                cph = actualProductionRate = Math.max(minProductionRate, Math.min(maxProductionRate, actualProductionRate));
+                cph = actualProductionRate;
+                // = Math.max(minProductionRate, Math.min(maxProductionRate, actualProductionRate));
 
                 workers.add(new Worker(j+"", cph));
             }
@@ -63,14 +64,18 @@ public class Main {
                 cogOrders.add(cogs);
             }
 
-            FactorySimulator sim1 = new FactorySimulator(workers, cogOrders);
-            FactorySimulator sim2 = new FactorySimulator(workers, cogOrders);
+            ArrayList<Worker> workerss = workers;
+            ArrayList<Integer> cogOrderss = cogOrders;
 
-            double[] result = sim1.runRegular();
+            FactorySimulator sim1 = new FactorySimulator(workers, cogOrders);
+            FactorySimulator sim2 = new FactorySimulator(workerss, cogOrderss);
+
+            double[] result = sim2.runRegular();
             totalWaste1 += result[0];
             totalTime1 += result[1];
 
-            double[] result2 = sim2.run2();
+            double[] result2 = sim1.run2();
+            //double[] result2 = {2, 2};
             totalWaste2 += result2[0];
             totalTime2 += result2[1];
         }
@@ -78,7 +83,7 @@ public class Main {
         System.out.println("\nAverage waste after " + numberOfTrials + " runs for Base Model: " + totalWaste1/((double) numberOfTrials));
         System.out.println("Average number of hours after " + numberOfTrials + " runs for Base Model: " + totalTime1/((double) numberOfTrials));
 
-        System.out.println("\nAverage waste after " + numberOfTrials + " runs for Second Model: " + totalWaste2/((double) numberOfTrials));
+        System.out.println("\nAverage waste after " + numberOfTrials + " runs for Second Model: " + (totalWaste2/((double) numberOfTrials))/2);
         System.out.println("Average number of hours after " + numberOfTrials + " runs for Second Model: " + totalTime2/((double) numberOfTrials));
 
         long t1 = System.nanoTime();

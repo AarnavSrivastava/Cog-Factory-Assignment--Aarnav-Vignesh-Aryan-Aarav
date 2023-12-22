@@ -91,6 +91,30 @@ public class FactorySimulator {
         return true;
     }
 
+    public int distanceFromWhole(double d)
+    {
+        d = d*1000;
+        int dd = (int)d;
+        int per = dd % 1000;
+        
+        if(1000-per <= per)
+        {
+            return 1000-per;
+        }
+        
+        return per;
+    }
+
+    public int distanceFromWholeLarge(double d)
+    {
+        d = d*1000;
+        int dd = (int)d;
+        int per = dd % 1000;
+        
+        return 1000-per;
+    }
+
+
     //Assign largest inital orders to best CPH workers initally
     public double[] run2() {
         int hoursWorked = 0;
@@ -102,6 +126,7 @@ public class FactorySimulator {
 
         Collections.sort(orders, Collections.reverseOrder());
 
+        System.out.println(orders);
         ArrayList<Worker> workersList = new ArrayList<>();
         
         while (!workerQueue.isEmpty()) {
@@ -109,27 +134,11 @@ public class FactorySimulator {
             workersList.add(worker);
         }
 
-        for (Worker worker : workers) {
-            if (worker.isBusy()) {
-            } else {
-                if (!orders.isEmpty()) {
-                    int lowestIndex = 0;
-                    int lowestRemainder = Integer.MAX_VALUE;
-                    
-                    for (int i = 0; i < orders.size(); i++) {
-                        int order = orders.get(i);
+        Collections.reverse(workersList);
 
-                        int remainder = order % worker.getCph();
-
-                        if (remainder < lowestRemainder) {
-                            lowestRemainder = remainder;
-                            lowestIndex = i;
-                        }
-                    }
-
-                    workersList.get(lowestIndex).assignOrder(orders.remove(lowestIndex));
-                }
-            }
+        for (Worker worker : workersList) {
+            
+            worker.assignOrder(orders.remove(0));
         }
 
         while (!orders.isEmpty() || !workersDone(workers)) {
@@ -140,20 +149,21 @@ public class FactorySimulator {
                     if (!orders.isEmpty()) {
                         // System.out.println("Worker " + worker.getNames() + " is to be assigned a new order and has " + worker.getCogsInProgress() + " cogs in progress. They have completed " + worker.getTotalCogsProduced() + " cogs and wasted " + worker.getTotalWaste() + " cogs");
                         int lowestIndex = 0;
-                        int lowestRemainder = Integer.MAX_VALUE;
+                        double lowestRemainder = Double.MAX_VALUE;
                         
                         for (int i = 0; i < orders.size(); i++) {
                             int order = orders.get(i);
 
-                            int remainder = order % worker.getCph();
+                            double remainder = (double)order / (double)worker.getCph();
 
-                            if (remainder < lowestRemainder) {
-                                lowestRemainder = remainder;
+                            if (distanceFromWholeLarge(remainder) < lowestRemainder) {
+                                lowestRemainder = distanceFromWholeLarge(remainder);
                                 lowestIndex = i;
                             }
                         }
+                        System.out.println(lowestRemainder);
 
-                        workersList.get(lowestIndex).assignOrder(orders.remove(lowestIndex));
+                        worker.assignOrder(orders.remove(lowestIndex));
 
                         // System.out.println("Worker " + worker.getNames() + " is busy and has " + worker.getCogsInProgress() + " cogs in progress");
                     } else {
@@ -178,8 +188,8 @@ public class FactorySimulator {
         for (Worker worker : workers) {
             totalWaste += worker.getTotalWaste();
         }
-        // System.out.println("Average Waste: " + (totalWaste/((double) workers.size())));
-        // System.out.println("Hours Worked: " + hoursWorked);
+        System.out.println("Average Waste: " + (totalWaste/((double) workers.size())));
+        System.out.println("Hours Worked: " + hoursWorked);
 
         
         return new double[] { (totalWaste/((double) workers.size())), hoursWorked };
